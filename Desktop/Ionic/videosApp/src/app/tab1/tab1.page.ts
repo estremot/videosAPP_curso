@@ -1,7 +1,10 @@
-import { IFilme } from '../models/IFilme.models';
+import { IFilme } from './../models/IFilme.models';
+import { DadosService } from './../services/dados.service';
+
 import { Component } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tab1',
@@ -19,7 +22,8 @@ export class Tab1Page {
         duracao: '44m',
         classificacao:76,
         cartaz: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/wHa6KOJAoNTFLFtp7wguUJKSnju.jpg',
-        generos: ['Drama', 'Sci-Fi', 'Fantasy']
+        generos: ['Drama', 'Sci-Fi', 'Fantasy'],
+        pagina: '/mortal-kombat'
     },
     {
       nome:'Tom & Jerry: O Filme (2021)',
@@ -27,20 +31,22 @@ export class Tab1Page {
       duracao: '1h 41m',
       classificacao:73,
       cartaz: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/9NvYyM8H6d5KAVGqpyFV9YPO5cU.jpg',
-      generos: ['Comédia', 'Família', 'Animação']
-    },
-    {
-      nome:'Guarda Costas',
-      lancamento:'11/02/1998 (BR)',
-      duracao: '1h 28m',
-      classificacao:70,
-      cartaz: 'https://www.themoviedb.org/t/p/w600_and_h900_bestv2/9NvYyM8H6d5KAVGqpyFV9YPO5cU.jpg',
-      generos: ['Comédia', 'Família', 'Animação']
+      generos: ['Comédia', 'Família', 'Animação'],
+      pagina: '/liga-justica'
     }
   ];
 
-  constructor(public alertController: AlertController, public toastController: ToastController) {}
+  constructor(
+    public alertController: AlertController,
+    public toastController: ToastController,
+    public dadosService: DadosService,
+    public route: Router) {}
 
+
+    exibirFilme(filme: IFilme){
+      this.dadosService.guardarDados('filme',filme);
+      this.route.navigateByUrl('/dados-filme');
+    }
   async exibirAlertaFavorito() {
     const alert = await this.alertController.create({
       header: 'Alerta!',
